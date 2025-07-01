@@ -1,0 +1,14 @@
+Generalnie, im mniejsza wartość normy reszty, tym metoda iteracyjna zbiega się szybciej, ponieważ oznacza to, że różnica między rozwiązaniem uzyskanym a rzeczywistym rozwiązaniem jest mała.
+
+Jaka jest norma residuum dla każdego sposobu rozwiązania równania macierzowego?
+	- residuum_norm_direct = 7.02302163136495e-13;
+	- residuum_norm_Jacobi = Inf;
+	- residuum_norm_Gauss_Seidel = 6.436734796338985e+10;
+
+Norma reszty dla metody bezpośredniej (residuum_norm_direct) sugeruje, że rozwiązanie jest bardzo dokładne.
+
+Czy metody iteracyjne zbiegają się?
+
+Norma reszty dla metody Jacobi (residuum_norm_Jacobi) jest ekstremalnie dużą wartością. Taka duża wartość sugeruje, że metoda Jacobi nie zbiega się, ponieważ reszta rośnie w trakcie iteracji, co oznacza, że rozwiązanie staje się coraz bardziej odległe od rzeczywistego rozwiązania.
+
+Norma reszty dla metody Gaussa-Seidela (residuum_norm_Gauss_Seidel) jest stosunkowo dużą wartością, ale mniejszą niż norma reszty dla metody Jacobi. To sugeruje, że ta metoda nie jest zbieżna, ale jest znacznie bardziej zbliżona do zbieżności niż metoda Jacobi.

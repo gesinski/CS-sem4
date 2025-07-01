@@ -1,0 +1,21 @@
+Wykorzystując funkcję fzero do wyznaczania miejsca zerowego funkcji tangens. Porównamy wpływ wyboru punktu startowego na wynik działania algorytmu.
+Użyjemy do tego dwa punkty startowe:
+
+Punkt startowy: 4.5
+Leży blisko 3𝜋/2 ≈ 4.7124, czyli blisko asymptoty, a nie miejsca zerowego.
+
+fzero mimo to znajduje x1 ≈ 4.71239, gdzie tan(x1) jest ogromny (~10^14) → czyli nie znalazł miejsca zerowego, tylko zatrzymał się blisko pionowej asymptoty, gdzie tan(x) rośnie do nieskończoności.
+
+To błąd — fzero trafił w miejsce zbieżne, ale niezerowe (a bliskie nieskończoności).
+
+Punkt startowy: 6.0
+Leży blisko 2π ≈ 6.28319, które jest miejscem zerowym tangensa.
+
+fzero znajduje x2 ≈ 6.28319 i tan(x2) ≈ -2.45e-16 → praktycznie zero, co oznacza sukces algorytmu.
+
+Funkcja fzero silnie zależy od wyboru punktu startowego. Dla funkcji tan(x) wybór punktu bliskiego asymptoty (np. x = 4.5) może skutkować niepoprawnym wynikiem,
+mimo spełnienia kryteriów zbieżności. Z kolei punkt x = 6.0, leżący blisko rzeczywistego miejsca zerowego 2𝜋 pozwala funkcji fzero na szybkie i precyzyjne odnalezienie rozwiązania. 
+Analiza pokazuje, jak istotna jest znajomość kształtu funkcji przy korzystaniu z metod numerycznych.
+
+Wybór punktu startowego ma ogromny wpływ na wynik działania fzero, szczególnie w przypadku funkcji z wieloma miejscami zerowymi, asymptotami.
+Jeśli punkt startowy znajduje się blisko asymptoty, fzero może nie znaleźć zera, lecz zatrzymać się w punkcie z bardzo dużą wartością funkcji → dając błędny wynik.
