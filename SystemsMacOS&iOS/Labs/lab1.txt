@@ -1,0 +1,120 @@
+import Foundation
+
+print("Ex 1:") //Strings and Text
+
+var number1 = 5
+var number2 = 10
+
+let output1 = "\(number1)" + " + " + "\(number2)" + " = " + "\(number1 + number2)"
+
+print(output1)
+
+let string = "Gdansk University of Technology"
+var stringChanged = ""
+for character in string {
+  if character == "n" {
+    stringChanged.append("⭐️")
+  }
+  else {
+    stringChanged.append(character)
+  }
+}
+print(stringChanged)
+
+let name = "Pawel"
+print("\(name)" + " -> " + "\(String(name.reversed()))")
+
+
+print("Ex 2:") //Control Flow
+
+for _ in 1...11 {
+  print("I will pass this course with best mark, because Swift is great!")
+}
+
+let N = 5
+
+for i in 1...N {
+  print(i*i)
+}
+
+for _ in 1...N {
+  for _ in 1...N {
+    print("@", terminator: "")
+  }
+  print("")
+}
+
+print("Ex 3:") //Arrays
+
+var numbers = [5, 10, 20, 15, 80, 13]
+
+var max = numbers[0]
+for number in numbers {
+  if number > max {
+    max = number
+  }
+}
+print(max)
+
+for i in stride(from: numbers.count - 1, through: 0, by: -1) {
+  print("\(numbers[i])" + ", ", terminator: "")
+}
+print("")
+
+var allNumbers = [10, 20, 10, 11, 13, 20, 10, 30]
+var unique  = [Int]()
+for number in allNumbers {
+  if !unique.contains(number) {
+    unique.append(number)
+  }
+}
+print(unique)
+
+print("Ex 4:") //Sets
+
+var number = 10
+var divisors = Set<Int>()
+for i in 1...number {
+  if number % i == 0{
+    divisors.insert(i)
+  }
+}
+
+print(divisors.sorted())
+
+print("Ex 5:") //Dictionaries
+
+var flights: [[String: String]] = [
+    [
+        "flightNumber" : "AA8025",
+        "destination" : "Copenhagen"
+    ],
+    [
+        "flightNumber" : "BA1442",
+        "destination" : "New York"
+    ],
+    [
+        "flightNumber" : "BD6741",
+        "destination" : "Barcelona"
+    ]
+]
+
+var flightNumbers = [String]()
+
+for flight in flights {
+  if let number = flight["flightNumber"] {
+    flightNumbers.append(number)
+  }
+}
+
+print(flightNumbers)
+
+var names = ["Hommer","Lisa","Bart"]
+
+var fullName =  [[String: String]]()
+
+for name in names {
+  fullName.append(["lastName": "Simpson", "firstName": name]) 
+}
+
+print(fullName)

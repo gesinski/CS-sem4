@@ -1,0 +1,150 @@
+import Foundation
+
+struct MoominCharacter {
+    var name: String
+    var health: Int
+    var friendship: Int
+    var level: Int
+
+    var isHealthy: Bool {
+        return health > 0
+    }
+
+    mutating func levelUp() {
+        level += 1
+        health += 10
+        friendship += 2
+        print("\(name) leveled up to level \(level)!")
+    }
+
+    func displayStats() {
+        print("\(name)'s Stats — Health: \(health), Friendship: \(friendship), Level: \(level)")
+    }
+}
+
+enum CreatureType: String {
+    case Friendly, Curious, Mysterious
+}
+
+struct Creature {
+    var name: String
+    var mood: Int  // 1 to 3, higher = more hostile
+    var patience: Int
+    var type: CreatureType
+
+    var isCalm: Bool {
+        return patience <= 0
+    }
+
+    static func randomEncounter() -> Creature {
+        let creatures = [
+            ("The Groke", 3, 15, CreatureType.Mysterious),
+            ("Hattifattener", 2, 10, CreatureType.Curious),
+            ("Stinky", 2, 12, CreatureType.Mysterious),
+            ("Snorkmaiden", 1, 8, CreatureType.Friendly)
+        ]
+
+        let selected = creatures.randomElement()!
+        return Creature(name: selected.0, mood: selected.1, patience: selected.2, type: selected.3)
+    }
+
+    func display() {
+        print("\n You encounter \(name) [Type: \(type.rawValue), Mood: \(mood), Patience: \(patience)]")
+    }
+}
+
+struct Item {
+    var name: String
+    var effect: (inout MoominCharacter) -> Void
+
+    static let hotCocoa = Item(name: "Hot Cocoa") { character in
+        character.health += 10
+        print("☕️ \(character.name) sips Hot Cocoa and gains +10 health!")
+    }
+}
+
+var journal: [String] = []
+
+
+func handleEncounter(player: inout MoominCharacter) {
+    var creature = Creature.randomEncounter()
+    journal.append("Met \(creature.name) with mood \(creature.mood)")
+
+    while !creature.isCalm && player.isHealthy {
+        player.displayStats()
+        creature.display()
+
+        print("What will you do?")
+        print("1 - Talk 🗣️   2 - Run 🏃")
+
+        guard let input = readLine(), let choice = Int(input) else {
+            print("Invalid input. Try again.")
+            continue
+        }
+
+        if choice == 1 {
+            talkToCreature(player: &player, creature: &creature)
+        } else if choice == 2 {
+            let escaped = runAway(player: &player, from: creature)
+            if escaped { break }
+        } else {
+            print("Please enter 1 or 2.")
+        }
+    }
+
+    if creature.isCalm {
+        print("You calmed \(creature.name)!")
+        player.levelUp()
+    } else if !player.isHealthy {
+        print("\(player.name) fainted in Moominvalley... Game Over.")
+    }
+}
+
+func talkToCreature(player: inout MoominCharacter, creature: inout Creature) {
+    print("💬 You try to talk to \(creature.name)...")
+    creature.patience -= player.friendship
+    journal.append("Talked to \(creature.name), reduced patience to \(creature.patience)")
+
+    if !creature.isCalm {
+        let damage = creature.mood * 2
+        player.health -= damage
+        print("\(creature.name) didnt calm down and startled you! Lost \(damage) health.")
+    }
+}
+
+func runAway(player: inout MoominCharacter, from creature: Creature) -> Bool {
+    print("🏃 You try to run away from \(creature.name)...")
+    let success = Bool.random()
+
+    if success {
+        print("✅ You successfully ran away!")
+        journal.append("Ran away from \(creature.name)")
+        return true
+    } else {
+        let damage = 3
+        player.health -= damage
+        print("😱 Failed to escape! \(creature.name) spooked you. Lost \(damage) health.")
+        return false
+    }
+}
+
+
+var player = MoominCharacter(name: "Moomintroll", health: 30, friendship: 5, level: 1)
+var items = [Item.hotCocoa]
+
+print("Welcome to Moominvalley, \(player.name)!")
+
+for day in 1...5 where player.isHealthy {
+    print("\n☀️ Day \(day) in Moominvalley...")
+    handleEncounter(player: &player)
+
+    if day == 3 && player.isHealthy {
+        print("🎁 You found an item: Hot Cocoa!")
+        items.first?.effect(&player)
+    }
+}
+
+print("\n📓 Moominvalley Journal:")
+for note in journal {
+    print("- \(note)")
+}

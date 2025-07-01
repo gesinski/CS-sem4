@@ -1,0 +1,239 @@
+import Foundation
+
+
+import Foundation
+
+//Ex 1 Data Model
+//Ex 4 Extend data model
+
+struct Location {
+    let id: Int
+    let type: String // e.g., "restaurant", "pub", "museum", "monument"
+    let name: String
+    let rating: Int // Rating from 1 to 5
+}
+
+struct City: Identifiable {
+    let id: Int
+    let name: String
+    let description: String
+    let latitude: Double
+    let longitude: Double
+    let tags: [String]
+    var locations: [Location]
+}
+
+let cities: [City] = [
+    City(id: 1, name: "Warszawa", description: "The capital of Poland, full of history and modernity.", latitude: 52.2298, longitude: 21.0122, tags: ["history", "music", "party"], locations: [
+        Location(id: 1, type: "museum", name: "POLIN Museum", rating: 5),
+        Location(id: 2, type: "restaurant", name: "Zapiecek", rating: 4),
+        Location(id: 3, type: "monument", name: "Palace of Culture and Science", rating: 4)
+    ]),
+    City(id: 2, name: "Kraków", description: "The former capital of Poland, known for Wawel Castle and Main Square.", latitude: 50.0647, longitude: 19.9450, tags: ["history", "music", "nature"], locations: [
+        Location(id: 4, type: "monument", name: "Wawel Castle", rating: 5),
+        Location(id: 5, type: "pub", name: "Alchemia", rating: 4),
+        Location(id: 6, type: "restaurant", name: "Pod Wawelem", rating: 5)
+    ]),
+    City(id: 3, name: "Gdańsk", description: "A port city on the Baltic Sea with a rich history.", latitude: 54.3520, longitude: 18.6466, tags: ["seaside", "history", "music"], locations: [
+        Location(id: 7, type: "museum", name: "European Solidarity Centre", rating: 5),
+        Location(id: 8, type: "monument", name: "Neptune's Fountain", rating: 4),
+        Location(id: 9, type: "restaurant", name: "Goldwasser", rating: 5)
+    ]),
+    City(id: 4, name: "Wrocław", description: "The city of a hundred bridges, full of culture and beautiful architecture.", latitude: 51.1079, longitude: 17.0385, tags: ["music", "party", "nature"], locations: [
+        Location(id: 10, type: "museum", name: "Wrocław Contemporary Museum", rating: 4),
+        Location(id: 11, type: "restaurant", name: "Restauracja Konspira", rating: 5),
+        Location(id: 12, type: "park", name: "Szczytnicki Park", rating: 5)
+    ]),
+    City(id: 5, name: "Poznań", description: "A dynamic city famous for St. Martin's croissants.", latitude: 52.4064, longitude: 16.9252, tags: ["music", "sport", "party"], locations: [
+        Location(id: 13, type: "museum", name: "National Museum", rating: 4),
+        Location(id: 14, type: "restaurant", name: "Ratuszova", rating: 5),
+        Location(id: 15, type: "monument", name: "Poznań Town Hall", rating: 5)
+    ]),
+    City(id: 6, name: "Łódź", description: "An industrial city with a growing cultural scene.", latitude: 51.7592, longitude: 19.4560, tags: ["music", "party", "history"], locations: [
+        Location(id: 16, type: "museum", name: "Museum of Art", rating: 4),
+        Location(id: 17, type: "club", name: "Stereo Club", rating: 4),
+        Location(id: 18, type: "restaurant", name: "Manufaktura", rating: 5)
+    ]),
+    City(id: 7, name: "Katowice", description: "The heart of Upper Silesia, known for the OFF music festival.", latitude: 50.2700, longitude: 19.0394, tags: ["music", "sport", "party"], locations: [
+        Location(id: 19, type: "club", name: "Hipnoza", rating: 5),
+        Location(id: 20, type: "restaurant", name: "Restauracja Italia", rating: 4),
+        Location(id: 21, type: "monument", name: "Spodek", rating: 4)
+    ]),
+    City(id: 8, name: "Lublin", description: "A historic city with a picturesque old town.", latitude: 51.2465, longitude: 22.5684, tags: ["history", "music", "nature"], locations: [
+        Location(id: 22, type: "museum", name: "Lublin Castle", rating: 5),
+        Location(id: 23, type: "restaurant", name: "Kuchnia Konfliktu", rating: 4),
+        Location(id: 24, type: "park", name: "Sławinkowski Forest", rating: 5)
+    ]),
+    City(id: 9, name: "Białystok", description: "A city surrounded by greenery and forests.", latitude: 53.1325, longitude: 23.1688, tags: ["nature", "music", "sport"], locations: [
+        Location(id: 25, type: "park", name: "Białowieża Forest", rating: 5),
+        Location(id: 26, type: "restaurant", name: "Restauracja Kalliope", rating: 4),
+        Location(id: 27, type: "museum", name: "Białystok Historical Museum", rating: 4)
+    ]),
+    City(id: 10, name: "Szczecin", description: "A coastal city with beautiful boulevards.", latitude: 53.4285, longitude: 14.5528, tags: ["seaside", "history", "nature"], locations: [
+        Location(id: 28, type: "museum", name: "National Museum", rating: 5),
+        Location(id: 29, type: "monument", name: "Dźwigozaury", rating: 4),
+        Location(id: 30, type: "restaurant", name: "Restauracja 13", rating: 4)
+    ]),
+    City(id: 11, name: "Bydgoszcz", description: "A water city, known for its opera and boulevards.", latitude: 53.1235, longitude: 18.0084, tags: ["music", "nature", "sport"], locations: [
+        Location(id: 31, type: "opera", name: "Opera Nova", rating: 5),
+        Location(id: 32, type: "park", name: "Myślęcinek", rating: 5),
+        Location(id: 33, type: "restaurant", name: "Restauracja Pod Aniołami", rating: 4)
+    ]),
+    City(id: 12, name: "Gdynia", description: "A modern port city on the Baltic Sea.", latitude: 54.5189, longitude: 18.5305, tags: ["seaside", "music", "party"], locations: [
+        Location(id: 34, type: "museum", name: "Emigration Museum", rating: 5),
+        Location(id: 35, type: "restaurant", name: "Seafood Harbor", rating: 4),
+        Location(id: 36, type: "club", name: "Kulturka", rating: 4)
+    ]),
+    City(id: 13, name: "Toruń", description: "The city of Copernicus and gingerbread, full of Gothic monuments.", latitude: 53.0138, longitude: 18.5984, tags: ["history", "nature", "music"], locations: [
+        Location(id: 37, type: "museum", name: "Copernicus Museum", rating: 5),
+        Location(id: 38, type: "restaurant", name: "Pierniczki Toruńskie", rating: 4),
+        Location(id: 39, type: "monument", name: "Toruń Old Town", rating: 5)
+    ]),
+    City(id: 14, name: "Rzeszów", description: "A rapidly developing city with modern infrastructure.", latitude: 50.0413, longitude: 21.9990, tags: ["music", "sport", "nature"], locations: [
+        Location(id: 40, type: "museum", name: "Rzeszów History Museum", rating: 4),
+        Location(id: 41, type: "restaurant", name: "U Szwagra", rating: 4),
+        Location(id: 42, type: "park", name: "Recreational Park", rating: 5)
+    ]),
+    City(id: 15, name: "Olsztyn", description: "The capital of Warmia and Masuria, surrounded by lakes.", latitude: 53.7784, longitude: 20.4801, tags: ["nature", "sport", "music"], locations: [
+        Location(id: 43, type: "park", name: "Olsztyn Lake", rating: 5),
+        Location(id: 44, type: "restaurant", name: "Zielony Zakątek", rating: 4),
+        Location(id: 45, type: "museum", name: "Museum of Warmia and Masuria", rating: 4)
+    ]),
+    City(id: 16, name: "Kielce", description: "A city in the Świętokrzyskie Mountains with beautiful trails.", latitude: 50.8661, longitude: 20.6286, tags: ["nature", "history", "music"], locations: [
+        Location(id: 46, type: "monument", name: "Kielce Cathedral", rating: 5),
+        Location(id: 47, type: "restaurant", name: "Restauracja Karmela", rating: 4),
+        Location(id: 48, type: "park", name: "Kadzielnia Nature Reserve", rating: 5)
+    ]),
+    City(id: 17, name: "Zielona Góra", description: "A city of wine and music festivals.", latitude: 51.9356, longitude: 15.5062, tags: ["music", "party", "nature"], locations: [
+        Location(id: 49, type: "wine cellar", name: "Winnica Zielona Góra", rating: 5),
+        Location(id: 50, type: "restaurant", name: "La Vita", rating: 4),
+        Location(id: 51, type: "festival", name: "Zielona Góra Wine Festival", rating: 5)
+    ]),
+    City(id: 18, name: "Opole", description: "Famous for the Polish Song Festival.", latitude: 50.6751, longitude: 17.9213, tags: ["music", "party", "history"], locations: [
+        Location(id: 52, type: "museum", name: "Opole Museum", rating: 4),
+        Location(id: 53, type: "monument", name: "Piast Tower", rating: 4),
+        Location(id: 54, type: "restaurant", name: "Słodowa", rating: 5)
+    ]),
+    City(id: 19, name: "Częstochowa", description: "A pilgrimage city, famous for Jasna Góra Monastery.", latitude: 50.8118, longitude: 19.1203, tags: ["history", "music", "nature"], locations: [
+        Location(id: 55, type: "monument", name: "Jasna Góra Monastery", rating: 5),
+        Location(id: 56, type: "museum", name: "Częstochowa Museum", rating: 4),
+        Location(id: 57, type: "park", name: "Park Lisiniec", rating: 4)
+    ]),
+    City(id: 20, name: "Sopot", description: "A famous seaside resort with a vibrant nightlife.", latitude: 54.4418, longitude: 18.5601, tags: ["seaside", "party", "music"], locations: [
+        Location(id: 58, type: "restaurant", name: "Biały Królik", rating: 5),
+        Location(id: 59, type: "club", name: "Sopot Club", rating: 5),
+        Location(id: 60, type: "monument", name: "Sopot Pier", rating: 4)
+    ])
+]
+
+
+//Ex 2 Search
+
+func searchCities(_ name: String) -> [City] {
+    return cities.filter { $0.name.lowercased().contains(name.lowercased()) }
+}
+
+//print(searchCities("Bydgoszcz"))
+
+func searchCitiesByTags(_ tags: String) -> [City] {
+    return cities.filter { $0.tags.contains(tags.lowercased()) }
+}
+
+//print(searchCitiesByTags("nature"))
+
+//Ex 3 Distance
+
+func distance(_ city1: City, _ city2: City) -> Double {
+  let dist = sqrt(pow(city1.latitude - city2.latitude, 2) +  pow(city1.longitude - city2.longitude, 2))
+  return dist
+}
+
+print(distance(cities[0], cities[1]))
+
+func closestFarthestCity(_ coords: [Double], _ cities: [City]) -> [City] {
+  var minDist = Double.greatestFiniteMagnitude 
+  var minCity: City = cities[0] 
+  var maxDist = 0.0
+  var maxCity: City = cities[0]
+  
+  for city in cities {
+    let dist = sqrt(pow(city.latitude - coords[0], 2) + pow(city.longitude - coords[1], 2))
+    if dist < minDist {
+      minDist = dist
+      minCity = city
+    }
+    if dist > maxDist {
+      maxDist = dist
+      maxCity = city
+    }
+  }
+  
+  return [minCity, maxCity]
+}
+
+print(closestFarthestCity([50.0, 20.0], cities))
+
+func furthestCities(_ cities: [City]) -> [City] {
+  guard cities.count > 1 else { return [] }
+  var maxDist = 0.0
+  var city1 = cities[0]
+  var city2 = cities[0]
+   for i in 0..<cities.count {
+    for j in i+1..<cities.count {
+      let dist = sqrt(pow(cities[i].latitude - cities[j].latitude, 2) + 
+                     pow(cities[i].longitude - cities[j].longitude, 2))
+      if dist > maxDist {
+        maxDist = dist
+        city1 = cities[i]
+        city2 = cities[j]
+      }
+    }
+  }
+  return [city1, city2]
+}
+
+print(furthestCities(cities))
+
+//Ex 5 Advance search
+
+func fiveStarRestaurants(_ cities: [City]) -> [String] {
+   var citiesWith5Star: [String] = []
+    
+    for city in cities {
+        for location in city.locations {
+            if location.type == "restaurant" && location.rating == 5 {
+                citiesWith5Star.append(city.name)
+                break 
+            }
+        }
+    }
+    
+    return citiesWith5Star
+}
+
+print(fiveStarRestaurants(cities))
+
+func listLocations(_ city: City) -> [Location] {
+    return city.locations.sorted { $0.rating > $1.rating }
+}
+
+print(listLocations(cities[0]))
+
+func displayCitiesWith5StarLocations(_ cities: [City]) {
+    for city in cities {
+        let fiveStarLocations = city.locations.filter { $0.rating == 5 }
+        
+        if !fiveStarLocations.isEmpty {
+            print("City: \(city.name)")
+            print("Number of 5-star rated locations: \(fiveStarLocations.count)")
+            print("5-Star Locations:")
+            
+            for location in fiveStarLocations {
+                print("  - \(location.name) (\(location.type))")
+            }
+            print("") 
+        }
+    }
+}
+
+displayCitiesWith5StarLocations(cities)

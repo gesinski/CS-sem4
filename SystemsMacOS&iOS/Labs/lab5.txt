@@ -1,0 +1,178 @@
+import Foundation
+enum MediaType: String {
+    case image = "image"
+    case video = "video"
+    case gif = "gif"
+}
+
+struct Media {
+    let type: MediaType
+    let url: String
+}
+
+class User {
+    let id: String
+    let name: String
+    let username: String
+    let profileImage: String
+    let verified: Bool
+    
+    init(id: String, name: String, username: String, profileImage: String, verified: Bool) {
+        self.id = id
+        self.name = name
+        self.username = username
+        self.profileImage = profileImage
+        self.verified = verified
+    }
+}
+
+class FeedItem {
+    let postId: String
+    let user: User
+    let content: String
+    let timestamp: Date
+    
+    init(postId: String, user: User, content: String, timestamp: Date) {
+        self.postId = postId
+        self.user = user
+        self.content = content
+        self.timestamp = timestamp
+    }
+}
+
+class Tweet: FeedItem {
+    let media: [Media]
+    var likes: Int
+    var retweets: Int
+    var comments: Int
+    
+    init(postId: String, user: User, content: String, timestamp: Date, media: [Media] = [], likes: Int = 0, retweets: Int = 0, comments: Int = 0) {
+        self.media = media
+        self.likes = likes
+        self.retweets = retweets
+        self.comments = comments
+        super.init(postId: postId, user: user, content: content, timestamp: timestamp)
+    }
+}
+
+class Retweet: FeedItem {
+    let originalTweet: Tweet
+    
+    init(postId: String, user: User, originalTweet: Tweet, timestamp: Date) {
+        self.originalTweet = originalTweet
+        let retweetContent = "RT @\(originalTweet.user.username): \(originalTweet.content)"
+        super.init(postId: postId, user: user, content: retweetContent, timestamp: timestamp)
+    }
+}
+
+extension Int {
+    func formattedCount() -> String {
+        if self >= 1_000_000 {
+            return String(format: "%.1fM", Double(self) / 1_000_000)
+        } else if self >= 1_000 {
+            return String(format: "%.1fK", Double(self) / 1_000)
+        } else {
+            return "\(self)"
+        }
+    }
+}
+
+extension Date {
+    func formattedDate() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM d, yyyy"
+        return formatter.string(from: self)
+    }
+}
+
+extension Tweet {
+    func displayTweet() {
+        print("\(user.name) (@\(user.username)) \(user.verified ? "✔️" : "")")
+        print(content)
+        
+        if !media.isEmpty {
+            print("📷 \(media.first?.type.rawValue.capitalized ?? "Media")")
+        }
+        
+        print("❤️ \(likes.formattedCount())  🔁 \(retweets.formattedCount())  💬 \(comments.formattedCount())")
+        print("🕒 \(timestamp.formattedDate())")
+        print("--------------------------------------------------")
+    }
+}
+
+let jsonData = """
+[
+    {
+        "id": "101",
+        "user": {
+            "id": "001",
+            "name": "Apple",
+            "username": "@apple",
+            "profile_image": "https://apple.com/profile.jpg",
+            "verified": true
+        },
+        "content": "Introducing the latest iPhone 🚀",
+        "media": [{ "type": "image", "url": "https://apple.com/iphone.jpg" }],
+        "timestamp": "2025-04-01T12:00:00Z",
+        "engagement": { "likes": 413000, "retweets": 12500, "comments": 3200 }
+    }
+]
+""".data(using: .utf8)!
+
+struct Engagement: Codable {
+    let likes: Int
+    let retweets: Int
+    let comments: Int
+}
+
+struct TweetJSON: Codable {
+    let id: String
+    let user: UserJSON
+    let content: String
+    let media: [MediaJSON]
+    let timestamp: String
+    let engagement: Engagement
+}
+
+struct UserJSON: Codable {
+    let id: String
+    let name: String
+    let username: String
+    let profile_image: String
+    let verified: Bool
+}
+
+struct MediaJSON: Codable {
+    let type: String
+    let url: String
+}
+
+let decoder = JSONDecoder()
+decoder.dateDecodingStrategy = .iso8601
+
+if let tweetsData = try? decoder.decode([TweetJSON].self, from: jsonData) {
+    var tweetObjects: [Tweet] = []
+    
+    for tweetData in tweetsData {
+        let user = User(id: tweetData.user.id, name: tweetData.user.name, username: tweetData.user.username, profileImage: tweetData.user.profile_image, verified: tweetData.user.verified)
+        
+        let mediaItems = tweetData.media.map { Media(type: MediaType(rawValue: $0.type) ?? .image, url: $0.url) }
+        
+        let tweet = Tweet(
+            postId: tweetData.id,
+            user: user,
+            content: tweetData.content,
+            timestamp: ISO8601DateFormatter().date(from: tweetData.timestamp) ?? Date(),
+            media: mediaItems,
+            likes: tweetData.engagement.likes,
+            retweets: tweetData.engagement.retweets,
+            comments: tweetData.engagement.comments
+        )
+        
+        tweetObjects.append(tweet)
+    }
+    
+    for tweet in tweetObjects {
+        tweet.displayTweet()
+    }
+}

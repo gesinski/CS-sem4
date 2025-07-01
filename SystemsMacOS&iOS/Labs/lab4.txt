@@ -1,0 +1,113 @@
+import Foundation
+
+class WordGame {
+    var word: [Character]  // Mutable word representation
+    var finalWord: String
+    var attempts: Int
+    private let categories: [String: [String]] = [
+        "Cities": ["tokyo", "paris", "london", "madrid", "berlin"],
+        "Movies": ["titanic", "inception", "avatar", "gladiator", "joker"],
+        "Books": ["dune", "it", "hamlet", "gatsby", "frankenstein"]
+    ]
+    private let sentences: [String] = [
+        "the_sky_is_blue", "reading_is_fun", "swift_is_powerful",
+        "movies_are_amazing", "coding_is_an_art"
+    ]
+    
+    init() {
+        self.finalWord = "swift" 
+        self.word = Array(repeating: "_", count: self.finalWord.count)
+        self.attempts = 10
+    
+        print("Choose a difficulty: Easy, Medium, Hard")
+        let difficulty = getDifficulty()
+        
+        print("Choose a category: Cities, Movies, Books")
+        let category = getCategory()
+        
+        // Choose word(s) based on difficulty
+        switch difficulty {
+        case "Easy":
+            self.finalWord = categories[category]?.randomElement() ?? "swift"
+            self.attempts = 10
+        case "Medium":
+            self.finalWord = (categories[category]?.shuffled().prefix(2).joined(separator: " ") ?? "swift code")
+            self.attempts = 7
+        case "Hard":
+            self.finalWord = sentences.randomElement() ?? "hello world"
+            self.attempts = 5
+        default:
+            self.finalWord = "swift"
+            self.attempts = 10
+        }
+        
+        self.word = Array(repeating: "_", count: self.finalWord.count)
+        
+        print("\nSelected Difficulty: \(difficulty)")
+        print("Selected Category: \(category)")
+        print("Word to guess has \(finalWord.count) characters.")
+    }
+    
+    func getDifficulty() -> String {
+        let levels = ["Easy", "Medium", "Hard"]
+        while true {
+            print("Enter difficulty:", terminator: " ")
+            if let input = readLine(), levels.contains(input) {
+                return input
+            }
+            print("Invalid choice! Please choose from \(levels.joined(separator: ", "))")
+        }
+    }
+    
+    func getCategory() -> String {
+        let availableCategories = Array(categories.keys)
+        while true {
+            print("Enter category:", terminator: " ")
+            if let input = readLine(), availableCategories.contains(input) {
+                return input
+            }
+            print("Invalid category! Please choose from \(availableCategories.joined(separator: ", "))")
+        }
+    }
+    
+    func drawMenu() {
+        print("\nCurrent word: \(String(word))")
+        print("Attempts left: \(attempts)")
+    }
+    
+    func gameplay() {
+        while attempts > 0 {
+            drawMenu()
+            print("Guess a letter:", terminator: " ")
+            guard let letter = readLine(), letter.count == 1, let char = letter.first else {
+                print("Invalid input! Enter a single letter.")
+                continue
+            }
+
+            var found = false
+            for (index, character) in finalWord.enumerated() {
+                if character == char {
+                    word[index] = char  // Replace underscore with guessed letter
+                    found = true
+                }
+            }
+
+            if !found {
+                print("Incorrect guess!")
+                attempts -= 1
+            } else {
+                print("Correct guess!")
+            }
+
+            if String(word) == finalWord {
+                print("🎉 Congratulations! You guessed the word: \(finalWord)")
+                return
+            }
+        }
+        
+        print("💀 Game over! The word was: \(finalWord)")
+    }
+}
+
+let game = WordGame()
+game.gameplay()
